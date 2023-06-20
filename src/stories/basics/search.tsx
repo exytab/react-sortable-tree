@@ -1,15 +1,16 @@
-import React, { useState } from 'react'
-import SortableTree from '../../../src'
+import React, { useState } from "react";
+
+import SortableTree from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
 const Search: React.FC = () => {
-  const title = 'Hay';
+  const title = "Hay";
 
   // For generating a haystack (you probably won't need to do this)
   const getStack = (left: number, hasNeedle: any = false): any => {
     if (left === 0) {
-      return hasNeedle ? { title: 'Needle' } : { title }
+      return hasNeedle ? { title: "Needle" } : { title };
     }
 
     return {
@@ -28,15 +29,15 @@ const Search: React.FC = () => {
           ],
         },
       ],
-    }
-  }
+    };
+  };
 
-  const [searchString, setSearchString] = useState('');
+  const [searchString, setSearchString] = useState("");
   const [searchFocusIndex, setSearchFocusIndex] = useState(0);
   const [searchFoundCount, setSearchFoundCount] = useState(0);
   const [treeData, setTreeData] = useState([
     {
-      title: 'Haystack',
+      title: "Haystack",
       children: [
         getStack(3, true),
         getStack(3),
@@ -49,35 +50,36 @@ const Search: React.FC = () => {
   // Case insensitive search of `node.title`
   const customSearchMethod = ({ node, searchQuery }: any) =>
     searchQuery &&
-    node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1
+    node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
 
   const selectPrevMatch = () =>
     setSearchFocusIndex(
       searchFocusIndex !== null
         ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
         : searchFoundCount - 1,
-    )
+    );
 
   const selectNextMatch = () =>
     setSearchFocusIndex(
       searchFocusIndex !== null
         ? (searchFocusIndex + 1) % searchFoundCount
         : 0,
-    )
+    );
 
   return (
     <div>
       <h2>Find the needle!</h2>
       <form
-        style={{ display: 'inline-block' }}
+        style={{ display: "inline-block" }}
         onSubmit={(event) => {
-          event.preventDefault()
-        }}>
+          event.preventDefault();
+        }}
+      >
         <input
           id="find-box"
           type="text"
           placeholder="Search..."
-          style={{ fontSize: '1rem' }}
+          style={{ fontSize: "1rem" }}
           value={searchString}
           onChange={(event) =>
             setSearchString(event.target.value)
@@ -87,14 +89,16 @@ const Search: React.FC = () => {
         <button
           type="button"
           disabled={!searchFoundCount}
-          onClick={selectPrevMatch}>
+          onClick={selectPrevMatch}
+        >
           &lt;
         </button>
 
         <button
           type="submit"
           disabled={!searchFoundCount}
-          onClick={selectNextMatch}>
+          onClick={selectNextMatch}
+        >
           &gt;
         </button>
 
@@ -137,7 +141,7 @@ const Search: React.FC = () => {
       </div>
     </div>
 
-  )
-}
+  );
+};
 
 export default Search;

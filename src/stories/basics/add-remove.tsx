@@ -1,61 +1,62 @@
-import React, { useState } from 'react'
-import SortableTree, { addNodeUnderParent, removeNodeAtPath } from '../../../src'
+import React, { useState } from "react";
+
+import SortableTree, { addNodeUnderParent, removeNodeAtPath } from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
 const firstNames = [
-  'Abraham',
-  'Adam',
-  'Agnar',
-  'Albert',
-  'Albin',
-  'Albrecht',
-  'Alexander',
-  'Alfred',
-  'Alvar',
-  'Ander',
-  'Andrea',
-  'Arthur',
-  'Axel',
-  'Bengt',
-  'Bernhard',
-  'Carl',
-  'Daniel',
-  'Einar',
-  'Elmer',
-  'Eric',
-  'Erik',
-  'Gerhard',
-  'Gunnar',
-  'Gustaf',
-  'Harald',
-  'Herbert',
-  'Herman',
-  'Johan',
-  'John',
-  'Karl',
-  'Leif',
-  'Leonard',
-  'Martin',
-  'Matt',
-  'Mikael',
-  'Nikla',
-  'Norman',
-  'Oliver',
-  'Olof',
-  'Olvir',
-  'Otto',
-  'Patrik',
-  'Peter',
-  'Petter',
-  'Robert',
-  'Rupert',
-  'Sigurd',
-  'Simon',
-]
+  "Abraham",
+  "Adam",
+  "Agnar",
+  "Albert",
+  "Albin",
+  "Albrecht",
+  "Alexander",
+  "Alfred",
+  "Alvar",
+  "Ander",
+  "Andrea",
+  "Arthur",
+  "Axel",
+  "Bengt",
+  "Bernhard",
+  "Carl",
+  "Daniel",
+  "Einar",
+  "Elmer",
+  "Eric",
+  "Erik",
+  "Gerhard",
+  "Gunnar",
+  "Gustaf",
+  "Harald",
+  "Herbert",
+  "Herman",
+  "Johan",
+  "John",
+  "Karl",
+  "Leif",
+  "Leonard",
+  "Martin",
+  "Matt",
+  "Mikael",
+  "Nikla",
+  "Norman",
+  "Oliver",
+  "Olof",
+  "Olvir",
+  "Otto",
+  "Patrik",
+  "Peter",
+  "Petter",
+  "Robert",
+  "Rupert",
+  "Sigurd",
+  "Simon",
+];
 
 const AddRemove: React.FC = () => {
-  const [treeData, setTreeData] = useState<any>([{ title: 'Peter Olofsson' }, { title: 'Karl Johansson' }]);
+  const [treeData, setTreeData] = useState<any>([{ title: "Peter Olofsson" }, { title: "Karl Johansson" }]);
   const [addAsFirstChild, setAddAsFirstChild] = useState(false);
 
   const getNodeKey = ({ treeIndex }: { treeIndex: number }) => treeIndex;
@@ -78,13 +79,14 @@ const AddRemove: React.FC = () => {
                       expandParent: true,
                       getNodeKey,
                       newNode: {
-                        title: `${getRandomName()} ${node.title.split(' ')[0]
-                          }sson`,
+                        title: `${getRandomName()} ${node.title.split(" ")[0]
+                        }sson`,
                       },
                       addAsFirstChild,
                     }).treeData
                   );
-                }}>
+                }}
+              >
                 Add Child
               </button>,
               <button
@@ -96,7 +98,8 @@ const AddRemove: React.FC = () => {
                       getNodeKey,
                     })
                   );
-                }}>
+                }}
+              >
                 Remove
               </button>,
             ],
@@ -110,7 +113,8 @@ const AddRemove: React.FC = () => {
               title: `${getRandomName()} ${getRandomName()}sson`,
             })
           );
-        }}>
+        }}
+      >
         Add more
       </button>
       <br />
@@ -121,12 +125,12 @@ const AddRemove: React.FC = () => {
           type="checkbox"
           checked={addAsFirstChild}
           onChange={() => {
-            setAddAsFirstChild((value) => !value)
+            setAddAsFirstChild((value) => !value);
           }}
         />
       </label>
     </div>
-  )
-}
+  );
+};
 
 export default AddRemove;

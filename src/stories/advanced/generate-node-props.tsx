@@ -1,24 +1,25 @@
-import React, { useState } from 'react'
-import SortableTree, { changeNodeAtPath } from '../../../src'
+import React, { useState } from "react";
+
+import SortableTree, { changeNodeAtPath } from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
 const data = [
-  { id: 1, position: 'Goalkeeper' },
-  { id: 2, position: 'Wing-back' },
+  { id: 1, position: "Goalkeeper" },
+  { id: 2, position: "Wing-back" },
   {
     id: 3,
-    position: 'Striker',
-    children: [{ id: 4, position: 'Full-back' }],
+    position: "Striker",
+    children: [{ id: 4, position: "Full-back" }],
   },
 ];
 
-const TEAM_COLORS = ['Red', 'Black', 'Green', 'Blue']
+const TEAM_COLORS = ["Red", "Black", "Green", "Blue"];
 
 const GenerateNodeProps: React.FC = () => {
   const [treeData, setTreeData] = useState<any>(data);
 
-  const getNodeKey = ({ node: { id } }: any) => id
+  const getNodeKey = ({ node: { id } }: any) => id;
 
   return (
     <div style={{ height: 300, width: 700 }}>
@@ -30,14 +31,14 @@ const GenerateNodeProps: React.FC = () => {
           const rootLevelIndex =
             treeData.reduce((acc: any, n: any, index: number) => {
               if (acc !== null) {
-                return acc
+                return acc;
               }
               if (path[0] === n.id) {
-                return index
+                return index;
               }
-              return null
-            }, null) || 0
-          const playerColor = TEAM_COLORS[rootLevelIndex]
+              return null;
+            }, null) || 0;
+          const playerColor = TEAM_COLORS[rootLevelIndex];
 
           return {
             style: {
@@ -45,10 +46,10 @@ const GenerateNodeProps: React.FC = () => {
               textShadow:
                 path.length === 1
                   ? `1px 1px 1px ${playerColor.toLowerCase()}`
-                  : 'none',
+                  : "none",
             },
-            title: `${playerColor} ${path.length === 1 ? 'Captain' : node.position
-              }`,
+            title: `${playerColor} ${path.length === 1 ? "Captain" : node.position
+            }`,
             onClick: () => {
               setTreeData(
                 changeNodeAtPath({
@@ -57,13 +58,13 @@ const GenerateNodeProps: React.FC = () => {
                   getNodeKey,
                   newNode: { ...node, expanded: !node.expanded },
                 }),
-              )
+              );
             },
-          }
+          };
         }}
       />
     </div>
-  )
-}
+  );
+};
 
 export default GenerateNodeProps;

@@ -1,7 +1,8 @@
-import React, { Component, useState } from 'react'
-import { DndProvider, DropTarget } from 'react-dnd'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { SortableTreeWithoutDndContext as SortableTree } from '../../../src'
+import React, { FC, PropsWithChildren, useState } from "react";
+import { DndProvider, useDrop } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+import { SortableTreeWithoutDndContext as SortableTree } from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
@@ -10,49 +11,41 @@ import { SortableTreeWithoutDndContext as SortableTree } from '../../../src'
 // https://react-dnd.github.io/react-dnd/docs-drop-target.html
 // -------------------------
 // This type must be assigned to the tree via the `dndType` prop as well
-const trashAreaType = 'yourNodeType'
-const trashAreaSpec = {
-  // The endDrag handler on the tree source will use some of the properties of
-  // the source, like node, treeIndex, and path to determine where it was before.
-  // The treeId must be changed, or it interprets it as dropping within itself.
-  drop: (props: any, monitor: any) => ({ ...monitor.getItem(), treeId: 'trash' }),
-}
-const trashAreaCollect = (connect: any, monitor: any) => ({
-  connectDropTarget: connect.dropTarget(),
-  isOver: monitor.isOver({ shallow: true }),
-})
+const trashAreaType = "yourNodeType";
 
 // The component will sit around the tree component and catch
 // nodes dragged out
-class trashAreaBaseComponent extends Component {
-  render() {
-    const { connectDropTarget, children, isOver }: any = this.props
+const TrashAreaComponent: FC<PropsWithChildren> = (props) => {
+  const { children } = props;
 
-    return connectDropTarget(
-      <div
-        style={{
-          height: '100vh',
-          padding: 50,
-          background: isOver ? 'pink' : 'transparent',
-        }}>
-        {children}
-      </div>
-    )
-  }
-}
+  const [{ isOver }, drop] = useDrop({
+    accept: trashAreaType,
+    drop: (item, monitor) => ({ ...monitor.getItem(), treeId: "trash" }),
+    collect: (monitor) => ({
+      isOver: monitor.isOver({ shallow: true }),
+    }),
+  }, []);
 
-const TrashAreaComponent = DropTarget(
-  trashAreaType,
-  trashAreaSpec,
-  trashAreaCollect
-)(trashAreaBaseComponent)
+  return (
+    <div
+      ref={drop}
+      style={{
+        height: "100vh",
+        padding: 50,
+        background: isOver ? "pink" : "transparent",
+      }}
+    >
+      {children}
+    </div>
+  );
+};
 
 const DragOutToRemove: React.FC = () => {
   const [treeData, setTreeData] = useState([
-    { title: '1' },
-    { title: '2' },
-    { title: '3' },
-    { title: '4', expanded: true, children: [{ title: '5' }] },
+    { title: "1" },
+    { title: "2" },
+    { title: "3" },
+    { title: "4", expanded: true, children: [{ title: "5" }] },
   ]);
 
   return (
@@ -69,7 +62,7 @@ const DragOutToRemove: React.FC = () => {
         </TrashAreaComponent>
       </div>
     </DndProvider>
-  )
-}
+  );
+};
 
 export default DragOutToRemove;

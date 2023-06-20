@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import SortableTree, { getFlatDataFromTree, getTreeFromFlatData } from '../../../src'
+import React, { useState } from "react";
+
+import SortableTree, { getFlatDataFromTree, getTreeFromFlatData } from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
 const initialData = [
-  { id: '1', name: 'N1', parent: null },
-  { id: '2', name: 'N2', parent: null },
-  { id: '3', name: 'N3', parent: 2 },
-  { id: '4', name: 'N4', parent: 3 },
-]
+  { id: "1", name: "N1", parent: null },
+  { id: "2", name: "N2", parent: null },
+  { id: "3", name: "N3", parent: 2 },
+  { id: "4", name: "N4", parent: 3 },
+];
 
 const TreeDataIO: React.FC = () => {
   const [treeData, setTreeData] = useState(getTreeFromFlatData({
@@ -29,7 +30,7 @@ const TreeDataIO: React.FC = () => {
     // The last entry in the path is this node's key
     // The second to last entry (accessed here) is the parent node's key
     parent: path.length > 1 ? path[path.length - 2] : null,
-  }))
+  }));
 
   return (
     <div>
@@ -45,12 +46,12 @@ const TreeDataIO: React.FC = () => {
       <ul>
         {flatData.map(({ id, name, parent }) => (
           <li key={id}>
-            id: {id}, name: {name}, parent: {parent || 'null'}
+            id: {id}, name: {name}, parent: {parent || "null"}
           </li>
         ))}
       </ul>
     </div>
-  )
-}
+  );
+};
 
 export default TreeDataIO;

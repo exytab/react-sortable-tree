@@ -1,21 +1,22 @@
-import React, { useState } from 'react'
-import SortableTree from '../../../src'
+import React, { useState } from "react";
+
+import SortableTree from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
 const data = [
   {
-    title: 'The file explorer theme',
+    title: "The file explorer theme",
     expanded: true,
     children: [
       {
-        title: 'Imported from @nosferatu500/theme-file-explorer',
+        title: "Imported from @nosferatu500/theme-file-explorer",
         expanded: true,
         children: [
           {
             title: (
               <div>
-                Find it on{' '}
+                Find it on{" "}
                 <a href="https://www.npmjs.com/package/@nosferatu500/theme-file-explorer">
                   npm
                 </a>
@@ -26,7 +27,7 @@ const data = [
       },
     ],
   },
-  { title: 'More compact than the default' },
+  { title: "More compact than the default" },
   {
     title: (
       <div>
@@ -47,7 +48,7 @@ const Themes: React.FC = () => {
         onChange={setTreeData}
       />
     </div>
-  )
-}
+  );
+};
 
 export default Themes;

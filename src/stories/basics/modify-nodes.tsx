@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
-import SortableTree, { changeNodeAtPath } from '../../../src'
+import React, { useState } from "react";
+
+import SortableTree, { changeNodeAtPath } from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
 const data = [
-  { name: 'IT Manager' },
+  { name: "IT Manager" },
   {
-    name: 'Regional Manager',
+    name: "Regional Manager",
     expanded: true,
-    children: [{ name: 'Branch Manager' }],
+    children: [{ name: "Branch Manager" }],
   },
 ];
 
@@ -25,7 +26,7 @@ const ModifyNodes: React.FC = () => {
         generateNodeProps={({ node, path }) => ({
           title: (
             <input
-              style={{ fontSize: '1.1rem' }}
+              style={{ fontSize: "1.1rem" }}
               value={node.name}
               onChange={(event) => {
                 const name = event.target.value;
@@ -44,7 +45,7 @@ const ModifyNodes: React.FC = () => {
         })}
       />
     </div>
-  )
-}
+  );
+};
 
 export default ModifyNodes;

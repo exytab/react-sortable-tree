@@ -1,36 +1,37 @@
-import React, { useState } from 'react'
-import SortableTree from '../../../src'
+import React, { useState } from "react";
+
+import SortableTree from "../../../src";
 // In your own app, you would need to use import styles once in the app
 // import 'react-sortable-tree/styles.css';
 
 const data = [
   {
-    title: 'Managers',
+    title: "Managers",
     expanded: true,
     children: [
       {
-        title: 'Rob',
+        title: "Rob",
         children: [],
         isPerson: true,
       },
       {
-        title: 'Joe',
+        title: "Joe",
         children: [],
         isPerson: true,
       },
     ],
   },
   {
-    title: 'Clerks',
+    title: "Clerks",
     expanded: true,
     children: [
       {
-        title: 'Bertha',
+        title: "Bertha",
         children: [],
         isPerson: true,
       },
       {
-        title: 'Billy',
+        title: "Billy",
         children: [],
         isPerson: true,
       },
@@ -49,7 +50,7 @@ const ChildlessNodes: React.FC = () => {
         onChange={setTreeData}
       />
     </div>
-  )
-}
+  );
+};
 
 export default ChildlessNodes;

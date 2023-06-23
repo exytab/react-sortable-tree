@@ -1,24 +1,9 @@
-import { DragSource as dragSource, DropTarget as dropTarget } from "react-dnd";
-
-import { memoizedInsertNode } from "./memoized-tree-data-utils";
 import { getDepth } from "./tree-data-utils";
 
-let rafId = 0;
-
-const propInjection = (connect, monitor) => {
-  const dragged = monitor.getItem();
-  return {
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-    canDrop: monitor.canDrop(),
-    draggedNode: dragged ? dragged.node : undefined,
-  };
-};
-
-const getTargetDepth = (
+export const getTargetDepth = (
   dropTargetProps,
   monitor,
-  component,
+  // component,
   canNodeHaveChildren,
   treeId,
   maxDepth
@@ -54,10 +39,14 @@ const getTargetDepth = (
     // Ignore the tree depth of the source, if it had any to begin with
     dragSourceInitialDepth = 0;
 
-    if (component) {
-      const relativePosition = component.node.getBoundingClientRect();
+    // if (component) {
+    if (true) {
+      // const relativePosition = component.node.getBoundingClientRect();
+      // const leftShift =
+      //   monitor.getSourceClientOffset().x - relativePosition.left;
+      const relativePosition = monitor.getInitialSourceClientOffset();
       const leftShift =
-        monitor.getSourceClientOffset().x - relativePosition.left;
+        monitor.getSourceClientOffset().x - relativePosition.x;
       blocksOffset = Math.round(
         leftShift / dropTargetProps.scaffoldBlockPxWidth
       );
@@ -85,7 +74,7 @@ const getTargetDepth = (
   return targetDepth;
 };
 
-const canDrop = (
+export const canDrop = (
   dropTargetProps,
   monitor,
   canNodeHaveChildren,
@@ -106,7 +95,7 @@ const canDrop = (
   const targetDepth = getTargetDepth(
     dropTargetProps,
     monitor,
-    undefined,
+    // undefined,
     canNodeHaveChildren,
     treeId,
     maxDepth
@@ -136,94 +125,4 @@ const canDrop = (
   }
 
   return true;
-};
-
-export const wrapTarget = (
-  el,
-  canNodeHaveChildren,
-  treeId,
-  maxDepth,
-  treeRefcanDrop,
-  drop,
-  dragHover,
-  dndType,
-  draggingTreeData,
-  treeReftreeData,
-  getNodeKey
-) => {
-  const nodeDropTarget = {
-    drop: (dropTargetProps, monitor, component) => {
-      const result = {
-        node: monitor.getItem().node,
-        path: monitor.getItem().path,
-        treeIndex: monitor.getItem().treeIndex,
-        treeId,
-        minimumTreeIndex: dropTargetProps.treeIndex,
-        depth: getTargetDepth(
-          dropTargetProps,
-          monitor,
-          component,
-          canNodeHaveChildren,
-          treeId,
-          maxDepth
-        ),
-      };
-
-      drop(result);
-
-      return result;
-    },
-
-    hover: (dropTargetProps, monitor, component) => {
-      const targetDepth = getTargetDepth(
-        dropTargetProps,
-        monitor,
-        component,
-        canNodeHaveChildren,
-        treeId,
-        maxDepth
-      );
-      const draggedNode = monitor.getItem().node;
-      const needsRedraw =
-        // Redraw if hovered above different nodes
-        dropTargetProps.node !== draggedNode ||
-        // Or hovered above the same node but at a different depth
-        targetDepth !== dropTargetProps.path.length - 1;
-
-      if (!needsRedraw) {
-        return;
-      }
-
-      // throttle `dragHover` work to available animation frames
-      cancelAnimationFrame(rafId);
-      rafId = requestAnimationFrame(() => {
-        const item = monitor.getItem();
-        // skip if drag already ended before the animation frame
-        if (!item || !monitor.isOver()) {
-          return;
-        }
-        dragHover({
-          node: draggedNode,
-          path: item.path,
-          minimumTreeIndex: dropTargetProps.listIndex,
-          depth: targetDepth,
-        });
-      });
-    },
-
-    canDrop: (dropTargetProps, monitor) =>
-      canDrop(
-        dropTargetProps,
-        monitor,
-        canNodeHaveChildren,
-        treeId,
-        maxDepth,
-        treeRefcanDrop,
-        draggingTreeData,
-        treeReftreeData,
-        getNodeKey
-      ),
-  };
-
-  return dropTarget(dndType, nodeDropTarget, propInjection)(el);
 };

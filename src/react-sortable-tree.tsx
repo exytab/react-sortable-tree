@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import withScrolling, {
   createHorizontalStrength,
   createScrollingComponent,
@@ -21,7 +19,6 @@ import {
   defaultGetNodeKey,
   defaultSearchMethod,
 } from "./utils/default-handlers";
-import { wrapTarget } from "./utils/dnd-manager";
 import { slideRows } from "./utils/generic-utils";
 import {
   memoizedGetDescendantCount,
@@ -233,19 +230,7 @@ class ReactSortableTree extends Component {
       },
     };
 
-    this.treeNodeRenderer = wrapTarget(
-      treeNodeRenderer,
-      this.canNodeHaveChildren,
-      this.treeId,
-      this.props.maxDepth,
-      this.props.canDrop,
-      this.drop,
-      this.dragHover,
-      this.dndType,
-      this.state.draggingTreeData,
-      this.props.treeData,
-      this.props.getNodeKey
-    );
+    this.treeNodeRenderer = treeNodeRenderer;
 
     this.toggleChildrenVisibility = this.toggleChildrenVisibility.bind(this);
     this.moveNode = this.moveNode.bind(this);
@@ -604,6 +589,15 @@ class ReactSortableTree extends Component {
         swapFrom={swapFrom}
         swapLength={swapLength}
         swapDepth={swapDepth}
+        dndType={this.dndType}
+        canNodeHaveChildren={this.canNodeHaveChildren}
+        maxDepth={this.props.maxDepth} // from mergeTheme() ?
+        canDrop={this.props.canDrop} // from mergeTheme() ?
+        drop={this.drop}
+        dragHover={this.dragHover}
+        draggingTreeData={this.state.draggingTreeData}
+        treeData={this.props.treeData}  // from mergeTheme() ?
+        getNodeKey={this.props.getNodeKey} // from mergeTheme() ?
         {...sharedProps}
       >
         <NodeContentRenderer

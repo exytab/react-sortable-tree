@@ -117,9 +117,10 @@ const NodeRendererDefault: React.FC<NodeRendererProps> = function (props) {
       isDragging: monitor.isDragging(),
       didDrop: monitor.didDrop(),
     }),
-    options: {
-      dropEffect: "copy",
-    },
+    // https://github.com/react-dnd/react-dnd/issues/3345
+    // options: {
+    //   dropEffect: "copy",
+    // },
   }), [props.node, props.parentNode, props.path, props.treeIndex, props.treeId]);
 
   let handle;

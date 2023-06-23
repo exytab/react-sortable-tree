@@ -51,28 +51,6 @@ const propInjection = (connect, monitor) => {
   };
 };
 
-export const wrapPlaceholder = (el, treeId, drop, dndType) => {
-  const placeholderDropTarget = {
-    drop: (dropTargetProps, monitor) => {
-      const { node, path, treeIndex } = monitor.getItem();
-      const result = {
-        node,
-        path,
-        treeIndex,
-        treeId,
-        minimumTreeIndex: 0,
-        depth: 0,
-      };
-
-      drop(result);
-
-      return result;
-    },
-  };
-
-  return dropTarget(dndType, placeholderDropTarget, propInjection)(el);
-};
-
 const getTargetDepth = (
   dropTargetProps,
   monitor,

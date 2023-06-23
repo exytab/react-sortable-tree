@@ -21,7 +21,7 @@ import {
   defaultGetNodeKey,
   defaultSearchMethod,
 } from "./utils/default-handlers";
-import { wrapPlaceholder, wrapSource, wrapTarget } from "./utils/dnd-manager";
+import { wrapSource, wrapTarget } from "./utils/dnd-manager";
 import { slideRows } from "./utils/generic-utils";
 import {
   memoizedGetDescendantCount,
@@ -202,12 +202,7 @@ class ReactSortableTree extends Component {
       this.endDrag,
       this.dndType
     );
-    this.treePlaceholderRenderer = wrapPlaceholder(
-      TreePlaceholder,
-      this.treeId,
-      this.drop,
-      this.dndType
-    );
+    this.treePlaceholderRenderer = TreePlaceholder;
 
     // Prepare scroll-on-drag options for this list
     this.scrollZoneVirtualList = (createScrollingComponent || withScrolling)(
@@ -697,7 +692,11 @@ class ReactSortableTree extends Component {
       const Placeholder = this.treePlaceholderRenderer;
       const PlaceholderContent = placeholderRenderer;
       list = (
-        <Placeholder treeId={this.treeId} drop={this.drop}>
+        <Placeholder
+          treeId={this.treeId}
+          drop={this.drop}
+          dndType={this.dndType}
+        >
           <PlaceholderContent />
         </Placeholder>
       );

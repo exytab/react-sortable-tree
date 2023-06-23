@@ -1,5 +1,5 @@
-import React, { Children, cloneElement } from "react";
-import { ConnectDropTarget } from "react-dnd";
+import React, { Children, PropsWithChildren, cloneElement } from "react";
+import { useDrop } from "react-dnd";
 
 import { TreeItem } from ".";
 
@@ -9,22 +9,49 @@ const defaultProps = {
 };
 
 type TreePlaceholderProps = {
-  children: any;
-  // Drop target
-  connectDropTarget: ConnectDropTarget;
-  isOver: boolean;
-  canDrop: boolean;
-  draggedNode: TreeItem;
   treeId: string;
   drop: any;
+  dndType: string;
+
+  // Drop target
+  // isOver: boolean;
+  // canDrop: boolean;
+  // draggedNode: TreeItem;
 }
 
-const TreePlaceholder = (props: TreePlaceholderProps) => {
+const TreePlaceholder = (props: PropsWithChildren<TreePlaceholderProps>) => {
   props = { ...defaultProps, ...props };
-  const { children, connectDropTarget, treeId, drop, ...otherProps } = props;
+  const { children, treeId, drop, dndType} = props;
 
-  return connectDropTarget(
-    <div>
+  const [otherProps, dropRef] = useDrop(() => ({
+    accept: dndType,
+    drop: (item: TreeItem, monitor) => {
+      const { node, path, treeIndex } = monitor.getItem();
+      const result = {
+        node,
+        path,
+        treeIndex,
+        treeId,
+        minimumTreeIndex: 0,
+        depth: 0,
+      };
+
+      drop(result);
+
+      return result;
+    },
+    collect: (monitor) => {
+      const dragged = monitor.getItem();
+      return {
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+        draggedNode: dragged ? dragged.node : undefined,
+      };
+    },
+  }), [treeId, drop, dndType]);
+
+  return (
+    <div ref={dropRef}>
       {Children.map(children, (child) =>
         cloneElement(child, {
           ...otherProps,

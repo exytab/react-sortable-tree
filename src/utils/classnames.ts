@@ -17,4 +17,4 @@
 // Boolean(0) === false;
 // Boolean("classname") === true;
 export const classnames = (...classes: string[]) =>
-  classes.filter(Boolean).join(' ')
+  classes.filter(Boolean).join(" ");

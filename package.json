@@ -10,7 +10,7 @@
     "clean": "rimraf lib",
     "prebuild": "yarn clean",
     "build": "rollup -c",
-    "lint": "eslint '*.{js,json}' 'src/**/*.{ts,tsx}' --cache",
+    "lint": "eslint -c .eslintrc.json --ext .ts,.tsx,.js,.jsx src/ ",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "prepublishOnly": "yarn build",

@@ -1,158 +1,121 @@
 {
   "env": {
-    "browser": true,
-    "shared-node-browser": true,
+    "commonjs": true,
     "node": true,
-    "es2021": true
+    "browser": true,
+    "es6": true
   },
-  "extends": [
-    "airbnb",
-    "airbnb-typescript",
-    "airbnb/hooks",
-    // "plugin:@typescript-eslint/recommended",
-    // "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier",
-    "plugin:sonarjs/recommended",
-    "plugin:prettier/recommended",
-    "plugin:react/recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:import/recommended",
-    "plugin:import/typescript",
-    "plugin:react-hooks/recommended",
-    "plugin:promise/recommended",
-    "plugin:unicorn/recommended",
-    "plugin:storybook/recommended"
-  ],
-  "plugins": [
-    "@typescript-eslint",
-    "react",
-    "prettier",
-    "import",
-    "sonarjs",
-    "promise",
-    "unicorn"
-  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 2021,
     "sourceType": "module",
-    "project": "./tsconfig.json",
+    "ecmaVersion": "latest",
     "ecmaFeatures": {
       "jsx": true
-    }
-  },
-  "rules": {
-    "no-continue": "off",
-    "no-plusplus": "off",
-    "no-case-declarations": "off",
-    // Too restrictive, writing ugly code to defend against a very unlikely scenario: https://eslint.org/docs/rules/no-prototype-builtins
-    "no-prototype-builtins": "off",
-    // https://basarat.gitbooks.io/typescript/docs/tips/defaultIsBad.html
-    "import/prefer-default-export": "off",
-    "import/no-default-export": "off",
-    // Too restrictive: https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/destructuring-assignment.md
-    "react/destructuring-assignment": "off",
-    "react/require-default-props": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/no-unstable-nested-components": ["warn", { "allowAsProps": true }],
-    // No jsx extension: https://github.com/facebook/create-react-app/issues/87#issuecomment-234627904
-    "react/jsx-filename-extension": "off",
-    // Use function hoisting to improve code readability
-    "no-use-before-define": [
-      "error",
-      { "functions": false, "classes": true, "variables": true }
-    ],
-    "@typescript-eslint/no-unused-vars": "off",
-    // Allow most functions to rely on type inference. If the function is exported, then `@typescript-eslint/explicit-module-boundary-types` will ensure it's typed.
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-use-before-define": [
-      "error",
-      { "functions": false, "classes": true, "variables": true, "typedefs": true }
-    ],
-    // Common abbreviations are known and readable
-    "unicorn/prevent-abbreviations": "off",
-    "unicorn/filename-case": "off",
-    // Disable for simplify type checking for TS
-    "unicorn/no-useless-undefined": "off",
-    "unicorn/prefer-node-protocol": "off",
-    // Temporary turn it off.
-    "no-restricted-syntax": "off",
-    "@typescript-eslint/no-unsafe-member-access": "off",
-    "@typescript-eslint/no-unsafe-call": "off",
-    "import/no-extraneous-dependencies": "off",
-    "require-atomic-updates": "warn",
-    "curly": ["warn", "multi-line", "consistent"],
-    "no-console": "off",
-    "import/named": "off",
-    "import/no-named-as-default": "off",
-    "import/no-unresolved": ["error", { "commonjs": true, "amd": true }],
-    "import/export": "error",
-    "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn",
-    "@typescript-eslint/no-duplicate-imports": ["error"],
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-empty-function": "off",
-    "@typescript-eslint/no-empty-interface": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "import/order": [
-      "error",
-      {
-        "alphabetize": { "order": "asc", "caseInsensitive": true },
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index",
-          "object"
-        ],
-        "newlines-between": "never",
-        "pathGroups": [
-          {
-            "pattern": "react",
-            "group": "builtin",
-            "position": "before"
-          }
-        ],
-        "pathGroupsExcludedImportTypes": ["builtin"]
-      }
-    ],
-    "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off",
-    "react/no-arrow-function-lifecycle": "warn",
-    "sort-imports": [
-      "error",
-      {
-        "ignoreDeclarationSort": true
-      }
-    ]
+    },
+    "project": "./tsconfig.json"
   },
   "settings": {
     "react": {
       "version": "detect"
     },
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     "import/parsers": {
-      "@typescript-eslint/parser": [".js", ".jsx", ".ts", ".tsx"]
+      "@typescript-eslint/parser": [".ts", ".tsx"]
     },
     "import/resolver": {
-      "node": {
-        "extensions": [".js", ".jsx", ".ts", ".tsx", ".json"],
-        "paths": ["src"]
-      },
       "typescript": {
-        "alwaysTryTypes": true,
         "project": "./tsconfig.json"
       }
     }
   },
-  "overrides": [
-    {
-      "files": ["src"],
-      "parserOptions": {
-        "project": "./tsconfig.json"
-      }
-    }
-  ]
+  "extends": [
+    "eslint:recommended",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:react-hooks/recommended",
+    "plugin:jsx-a11y/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "react",
+    "react-hooks",
+    "import",
+    "jsx-a11y"
+  ],
+  "rules": {
+    "quotes": ["error", "double"],
+    "object-curly-spacing": ["error", "always"],
+    "semi": ["error", "always"],
+    "indent": ["error", 2, { "SwitchCase": 1, "VariableDeclarator": "first" }],
+    "no-multiple-empty-lines": ["warn", {
+      "max": 1,
+      "maxBOF": 0
+    }],
+    "key-spacing": ["error", { "afterColon": true }],
+    "no-console": "warn",
+    "nonblock-statement-body-position": ["error", "below"],
+    "comma-spacing": ["warn"],
+    "no-undef": "error",
+
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-use-before-define": "warn",
+    "@typescript-eslint/no-empty-function": "warn",
+    "@typescript-eslint/no-this-alias": "warn",
+    "@typescript-eslint/naming-convention": ["warn", {
+      "selector": "function",
+      "format": ["PascalCase", "camelCase"]
+    }],
+    "@typescript-eslint/type-annotation-spacing": ["error", { "before": false, "after": true, "overrides": { "arrow": { "before": true, "after": true }} }],
+    "@typescript-eslint/member-delimiter-style": ["error", { "multiline": {
+      "delimiter": "semi"
+    }}],
+    "@typescript-eslint/no-unsafe-call": "warn",
+    "@typescript-eslint/no-explicit-any": ["error"],
+
+    "react/prop-types": "off",
+    "react/jsx-no-undef": [2, { "allowGlobals": true }],
+    "react/display-name": "warn",
+    "react/jsx-closing-bracket-location": ["warn", "line-aligned"],
+    "react/jsx-uses-react": "off",
+    "react/react-in-jsx-scope": "off",
+
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": ["warn"],
+
+    "jsx-a11y/no-autofocus": "warn",
+    "jsx-a11y/click-events-have-key-events": "warn",
+    "jsx-a11y/no-static-element-interactions": "warn",
+
+    "sort-imports": ["error", {
+      "ignoreDeclarationSort": true
+    }],
+    "import/order": ["error", {
+      "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
+      "pathGroups": [
+        {
+          "pattern": "**./css",
+          "group": "builtin"
+        },
+        {
+          "pattern": "**./scss",
+          "group": "builtin"
+        }
+      ],
+      "newlines-between": "always",
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
+      },
+      "pathGroupsExcludedImportTypes": ["builtin"]
+    }],
+    "no-restricted-imports": ["error", {
+      "patterns": []
+    }]
+  }
 }

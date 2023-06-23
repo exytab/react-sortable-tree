@@ -21,7 +21,7 @@ import {
   defaultGetNodeKey,
   defaultSearchMethod,
 } from "./utils/default-handlers";
-import { wrapSource, wrapTarget } from "./utils/dnd-manager";
+import { wrapTarget } from "./utils/dnd-manager";
 import { slideRows } from "./utils/generic-utils";
 import {
   memoizedGetDescendantCount,
@@ -196,12 +196,7 @@ class ReactSortableTree extends Component {
     this.treeId = `rst__${treeIdCounter}`;
     treeIdCounter += 1;
     this.dndType = dndType || this.treeId;
-    this.nodeContentRenderer = wrapSource(
-      nodeContentRenderer,
-      this.startDrag,
-      this.endDrag,
-      this.dndType
-    );
+    this.nodeContentRenderer = nodeContentRenderer;
     this.treePlaceholderRenderer = TreePlaceholder;
 
     // Prepare scroll-on-drag options for this list
@@ -617,6 +612,9 @@ class ReactSortableTree extends Component {
           isSearchFocus={isSearchFocus}
           canDrag={rowCanDrag}
           toggleChildrenVisibility={this.toggleChildrenVisibility}
+          startDrag={this.startDrag}
+          endDrag={this.endDrag}
+          dndType={this.dndType}
           {...sharedProps}
           {...nodeProps}
         />

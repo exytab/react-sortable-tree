@@ -5,42 +5,6 @@ import { getDepth } from "./tree-data-utils";
 
 let rafId = 0;
 
-const nodeDragSourcePropInjection = (connect, monitor) => ({
-  connectDragSource: connect.dragSource(),
-  connectDragPreview: connect.dragPreview(),
-  isDragging: monitor.isDragging(),
-  didDrop: monitor.didDrop(),
-});
-
-export const wrapSource = (el, startDrag, endDrag, dndType) => {
-  const nodeDragSource = {
-    beginDrag: (props) => {
-      startDrag(props);
-
-      return {
-        node: props.node,
-        parentNode: props.parentNode,
-        path: props.path,
-        treeIndex: props.treeIndex,
-        treeId: props.treeId,
-      };
-    },
-
-    endDrag: (props, monitor) => {
-      endDrag(monitor.getDropResult());
-    },
-
-    isDragging: (props, monitor) => {
-      const dropTargetNode = monitor.getItem().node;
-      const draggedNode = props.node;
-
-      return draggedNode === dropTargetNode;
-    },
-  };
-
-  return dragSource(dndType, nodeDragSource, nodeDragSourcePropInjection)(el);
-};
-
 const propInjection = (connect, monitor) => {
   const dragged = monitor.getItem();
   return {

@@ -1,5 +1,5 @@
 import React from "react";
-import { ConnectDragPreview, ConnectDragSource } from "react-dnd";
+import { useDrag } from "react-dnd";
 
 import { classnames } from "./utils/classnames";
 import { isDescendant } from "./utils/tree-data-utils";
@@ -46,13 +46,12 @@ export interface NodeRendererProps {
   treeId: string;
   rowDirection?: "ltr" | "rtl" | string | undefined;
 
-  connectDragPreview: ConnectDragPreview;
-  connectDragSource: ConnectDragSource;
+  dndType: string;
   parentNode?: TreeItem | undefined;
   startDrag: ({ path }: { path: number[] }) => void;
   endDrag: (dropResult: unknown) => void;
-  isDragging: boolean;
-  didDrop: boolean;
+  // isDragging: boolean;
+  // didDrop: boolean;
   draggedNode?: TreeItem | undefined;
   isOver: boolean;
   canDrop?: boolean | undefined;
@@ -64,9 +63,10 @@ const NodeRendererDefault: React.FC<NodeRendererProps> = function (props) {
   const {
     scaffoldBlockPxWidth,
     toggleChildrenVisibility,
-    connectDragPreview,
-    connectDragSource,
-    isDragging,
+    dndType,
+    startDrag,
+    endDrag,
+    // isDragging,
     canDrop,
     canDrag,
     node,
@@ -80,7 +80,7 @@ const NodeRendererDefault: React.FC<NodeRendererProps> = function (props) {
     buttons,
     className,
     style,
-    didDrop,
+    // didDrop,
     treeId: _treeId,
     isOver: _isOver, // Not needed, but preserved for other renderers
     parentNode: _parentNode, // Needed for dndManager
@@ -90,6 +90,37 @@ const NodeRendererDefault: React.FC<NodeRendererProps> = function (props) {
   const nodeTitle = title || node.title;
   const nodeSubtitle = subtitle || node.subtitle;
   const rowDirectionClass = rowDirection === "rtl" ? "rst__rtl" : undefined;
+
+  const [{ isDragging, didDrop }, dragRef, dragPreviewRef] = useDrag(() => ({
+    type: dndType,
+    item: (monitor) => {
+      startDrag(props);
+
+      return {
+        node: props.node,
+        parentNode: props.parentNode,
+        path: props.path,
+        treeIndex: props.treeIndex,
+        treeId: props.treeId,
+      };
+    },
+    end: (draggedItem, monitor) => {
+      endDrag(monitor.getDropResult());
+    },
+    isDragging: (monitor) => {
+      const dropTargetNode = monitor.getItem().node;
+      const draggedNode = props.node;
+
+      return draggedNode === dropTargetNode;
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+      didDrop: monitor.didDrop(),
+    }),
+    options: {
+      dropEffect: "copy",
+    },
+  }), [props.node, props.parentNode, props.path, props.treeIndex, props.treeId]);
 
   let handle;
   if (canDrag) {
@@ -109,9 +140,7 @@ const NodeRendererDefault: React.FC<NodeRendererProps> = function (props) {
           </div>
         </div>
       ) : (
-        connectDragSource(<div className="rst__moveHandle" />, {
-          dropEffect: "copy",
-        })
+        <div ref={dragRef} className="rst__moveHandle" />
       );
   }
 
@@ -160,75 +189,74 @@ const NodeRendererDefault: React.FC<NodeRendererProps> = function (props) {
 
       <div className={classnames("rst__rowWrapper", rowDirectionClass ?? "")}>
         {/* Set the row preview to be used during drag and drop */}
-        {connectDragPreview(
+        <div
+          ref={dragPreviewRef}
+          className={classnames(
+            "rst__row",
+            isLandingPadActive ? "rst__rowLandingPad" : "",
+            isLandingPadActive && !canDrop ? "rst__rowCancelPad" : "",
+            isSearchMatch ? "rst__rowSearchMatch" : "",
+            isSearchFocus ? "rst__rowSearchFocus" : "",
+            rowDirectionClass ?? "",
+            className ?? ""
+          )}
+          style={{
+            opacity: isDraggedDescendant ? 0.5 : 1,
+            ...style,
+          }}
+        >
+          {handle}
+
           <div
             className={classnames(
-              "rst__row",
-              isLandingPadActive ? "rst__rowLandingPad" : "",
-              isLandingPadActive && !canDrop ? "rst__rowCancelPad" : "",
-              isSearchMatch ? "rst__rowSearchMatch" : "",
-              isSearchFocus ? "rst__rowSearchFocus" : "",
-              rowDirectionClass ?? "",
-              className ?? ""
+              "rst__rowContents",
+              canDrag ? "" : "rst__rowContentsDragDisabled",
+              rowDirectionClass ?? ""
             )}
-            style={{
-              opacity: isDraggedDescendant ? 0.5 : 1,
-              ...style,
-            }}
           >
-            {handle}
-
             <div
               className={classnames(
-                "rst__rowContents",
-                canDrag ? "" : "rst__rowContentsDragDisabled",
+                "rst__rowLabel",
                 rowDirectionClass ?? ""
               )}
             >
-              <div
+              <span
                 className={classnames(
-                  "rst__rowLabel",
-                  rowDirectionClass ?? ""
+                  "rst__rowTitle",
+                  node.subtitle ? "rst__rowTitleWithSubtitle" : ""
                 )}
               >
-                <span
-                  className={classnames(
-                    "rst__rowTitle",
-                    node.subtitle ? "rst__rowTitleWithSubtitle" : ""
-                  )}
-                >
-                  {typeof nodeTitle === "function"
-                    ? nodeTitle({
+                {typeof nodeTitle === "function"
+                  ? nodeTitle({
+                    node,
+                    path,
+                    treeIndex,
+                  })
+                  : nodeTitle}
+              </span>
+
+              {nodeSubtitle && (
+                <span className="rst__rowSubtitle">
+                  {typeof nodeSubtitle === "function"
+                    ? nodeSubtitle({
                       node,
                       path,
                       treeIndex,
                     })
-                    : nodeTitle}
+                    : nodeSubtitle}
                 </span>
+              )}
+            </div>
 
-                {nodeSubtitle && (
-                  <span className="rst__rowSubtitle">
-                    {typeof nodeSubtitle === "function"
-                      ? nodeSubtitle({
-                        node,
-                        path,
-                        treeIndex,
-                      })
-                      : nodeSubtitle}
-                  </span>
-                )}
-              </div>
-
-              <div className="rst__rowToolbar">
-                {buttons?.map((btn, index) => (
-                  <div key={index} className="rst__toolbarButton">
-                    {btn}
-                  </div>
-                ))}
-              </div>
+            <div className="rst__rowToolbar">
+              {buttons?.map((btn, index) => (
+                <div key={index} className="rst__toolbarButton">
+                  {btn}
+                </div>
+              ))}
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import withScrolling, {
 } from "@nosferatu500/react-dnd-scrollzone";
 import isEqual from "lodash.isequal";
 import React, { Component } from "react";
-import { DndContext, DndProvider } from "react-dnd";
+import { DndProvider, useDragDropManager } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { Virtuoso, VirtuosoHandle, VirtuosoProps } from "react-virtuoso";
 
@@ -66,7 +66,7 @@ const mergeTheme = (props) => {
   return merged;
 };
 
-class ReactSortableTree extends Component {
+class ReactSortableTree extends Component<ReactSortableTreeProps> {
   // returns the new state after search
   static search(props, state, seekIndex, expand, singleSearch) {
     const {
@@ -958,15 +958,21 @@ ReactSortableTree.defaultProps = {
 };
 
 const SortableTreeWithoutDndContext = function (props: ReactSortableTreeProps) {
-  return (
-    <DndContext.Consumer>
-      {({ dragDropManager }) =>
-        dragDropManager === undefined ? undefined : (
-          <ReactSortableTree {...props} dragDropManager={dragDropManager} />
-        )
-      }
-    </DndContext.Consumer>
-  );
+  const dragDropManager = useDragDropManager();
+  if (dragDropManager === undefined)
+    return undefined;
+
+  return (<ReactSortableTree {...props} dragDropManager={dragDropManager} />);
+
+  // return (
+  //   <DndContext.Consumer>
+  //     {({ dragDropManager }) =>
+  //       dragDropManager === undefined ? undefined : (
+  //         <ReactSortableTree {...props} dragDropManager={dragDropManager} />
+  //       )
+  //     }
+  //   </DndContext.Consumer>
+  // );
 };
 
 const SortableTree = function (props: ReactSortableTreeProps) {

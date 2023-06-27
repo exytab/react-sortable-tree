@@ -1,6 +1,6 @@
 {
   "name": "@exytab/react-sortable-tree",
-  "version": "0.1.0",
+  "version": "0.5.0",
   "description": "Drag-and-drop sortable component for nested data and hierarchies",
   "homepage": "https://exytab.github.io/react-sortable-tree",
   "main": "lib/index.js",
@@ -98,7 +98,8 @@
   },
   "peerDependencies": {
     "react": "^17.0.0 || ^18.0.0",
-    "react-dom": "^17.0.0 || ^18.0.0"
+    "react-dom": "^17.0.0 || ^18.0.0",
+    "react-dnd": "16.0.1"
   },
   "dependencies": {
     "@nosferatu500/react-dnd-scrollzone": "^3.0.0",

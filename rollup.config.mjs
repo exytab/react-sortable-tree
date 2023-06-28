@@ -12,7 +12,7 @@ import terser from "@rollup/plugin-terser";
 import { createRequire } from 'node:module';
 const requireFile = createRequire(import.meta.url);
 const packageJson = requireFile('./package.json');
-
+import path from 'path';
 
 export default [{
   input: "src/index.ts",
@@ -34,13 +34,14 @@ export default [{
     commonjs(),
     typescript(),
     postcss({
-      extensions: ['.css']
+      extensions: ['.css'],
+      extract: path.resolve('dist/styles.css'),
     }),
     terser(),
   ]
 }, {
-  input: 'lib/index.d.ts',
-  output: [{ file: 'lib/index.d.ts', format: 'es' }],
+  input: 'dist/index.d.ts',
+  output: [{ file: 'dist/index.d.ts', format: 'es' }],
   plugins: [dts()],
   external: [/\.css$/]
 }];

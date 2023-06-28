@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
       "target": "ES2022",
-      "outDir": "lib",
+      "outDir": "dist",
       "lib": [
         "dom",
         "dom.iterable",
         "esnext"
       ],
       "declaration": true,
-      "declarationDir": "lib",
+      "declarationDir": "dist",
       "allowJs": true,
       "skipLibCheck": true,
       "esModuleInterop": true,
@@ -26,7 +26,8 @@
       "src"
     ],
     "exclude": [
-        "node_modules",
-        "lib"
+      "node_modules",
+      "dist",
+      "src/stories"
     ]
   }

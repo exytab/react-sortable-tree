@@ -21,6 +21,7 @@ lib
 build
 style.css
 style.css.map
+.yarn
 
 # Error files
 yarn-error.log

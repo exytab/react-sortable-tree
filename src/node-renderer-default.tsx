@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 import { useDrag } from "react-dnd";
 
 import { classnames } from "./utils/classnames";

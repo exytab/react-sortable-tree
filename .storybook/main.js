@@ -1,8 +1,21 @@
 module.exports = {
   "stories": ["../src/**/*.stories.tsx"],
-  "addons": ["@storybook/addon-links", "@storybook/addon-essentials", "@storybook/addon-styling", "@storybook/addon-actions"],
+  "addons": [
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/addon-themes",
+    "@storybook/addon-styling-webpack",
+    "@storybook/addon-actions",
+    "@storybook/addon-webpack5-compiler-babel",
+    "@chromatic-com/storybook"
+  ],
+
   framework: {
     name: "@storybook/react-webpack5",
     options: {}
+  },
+
+  docs: {
+    autodocs: true
   }
 };

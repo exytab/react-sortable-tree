@@ -1,4 +1,4 @@
-# Note: Support React-DND: 16, React: 17/18
+# Note: Support React-DND: 16, React: 17/18/19
 
 # Note: Doesn't support React Strict mode
 

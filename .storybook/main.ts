@@ -21,7 +21,8 @@ const config: StorybookConfig = {
     getAbsolutePath("@storybook/addon-actions"),
     getAbsolutePath("@storybook/addon-webpack5-compiler-babel"),
     getAbsolutePath("@chromatic-com/storybook"),
-    "@storybook/addon-webpack5-compiler-babel"
+    "@storybook/addon-webpack5-compiler-babel",
+    "@chromatic-com/storybook"
   ],
 
   framework: {

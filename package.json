@@ -1,6 +1,6 @@
 {
   "name": "@exytab/react-sortable-tree",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Drag-and-drop sortable component for nested data and hierarchies",
   "homepage": "https://exytab.github.io/react-sortable-tree",
   "main": "dist/index.js",

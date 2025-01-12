@@ -35,7 +35,7 @@ export default [{
     typescript(),
     postcss({
       extensions: ['.css'],
-      extract: path.resolve('dist/styles.css'),
+      extract: path.resolve('dist/style.css'),
     }),
     terser(),
   ]
